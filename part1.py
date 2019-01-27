@@ -9,7 +9,6 @@ substances = pd.Series(df["SubstanceName"]).unique()
 years = pd.Series(df["YYYY"]).unique()
 states = pd.Series(df["State"]).unique()
 
-
 def drug_in_state(state, substance_name):
     ret = []
     for year in years:
