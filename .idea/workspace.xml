@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="29736c9b-a7a2-4e85-b4b6-9cb8e254288d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part1.py" beforeDir="false" afterPath="$PROJECT_DIR$/part1.py" afterDir="false" />
-    </list>
+    <list default="true" id="29736c9b-a7a2-4e85-b4b6-9cb8e254288d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/part1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-184">
-              <caret line="149" column="20" lean-forward="true" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
+            <state relative-caret-position="-2529">
+              <caret line="23" column="43" selection-start-line="23" selection-start-column="43" selection-end-line="23" selection-end-column="43" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -163,12 +160,12 @@
       <workItem from="1548564004800" duration="1218000" />
       <workItem from="1548565251170" duration="4570000" />
       <workItem from="1548575912446" duration="3867000" />
-      <workItem from="1548580037970" duration="892000" />
+      <workItem from="1548580037970" duration="1172000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34618000" />
+    <option name="totallyTimeSpent" value="34898000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -181,7 +178,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.09227468" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -197,12 +193,12 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32891566" />
-      <window_info anchor="bottom" id="Python Console" order="12" visible="true" weight="0.36626506" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.59638554" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.36626506" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.4792561" />
+      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.4792561" />
       <window_info anchor="right" x="0" y="0" width="310" height="605" id="Documentation" order="4" side_tool="true" weight="0.4334764" />
       <window_info anchor="right" id="Database" order="5" />
     </layout>
@@ -259,8 +255,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/part1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-184">
-          <caret line="149" column="20" lean-forward="true" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
+        <state relative-caret-position="-2529">
+          <caret line="23" column="43" selection-start-line="23" selection-start-column="43" selection-end-line="23" selection-end-column="43" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
