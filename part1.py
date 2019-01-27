@@ -4,59 +4,173 @@ import matplotlib.pyplot as plt
 
 df = pd.read_excel('Data/MCM_NFLIS_Data.xlsx', sheet_name='Data')
 
-
-#
-# counties = pd.Series(df["FIPS_Combined"]).unique()
-# substances = pd.Series(df["SubstanceName"]).unique()
-# years = pd.Series(df["YYYY"]).unique()
-# states = pd.Series(df["State"]).unique()
+counties = pd.Series(df["FIPS_Combined"]).unique()
+substances = pd.Series(df["SubstanceName"]).unique()
+years = pd.Series(df["YYYY"]).unique()
+states = pd.Series(df["State"]).unique()
 
 
-def report2():
-    # for substance in substances:
-    #
-    #     for year in years:
-    #         # print(year)
-    #         for county in counties:
-    #             # picking the data we need from specific states, counties, drugs, etc.
-
-    dr = np.array(
-        df[(df['FIPS_State'] == 51) & (df['YYYY'] == 2010)]
-            .drop_duplicates(subset=['COUNTY'], keep='first', inplace=False)
-            .loc[:, 'TotalDrugReportsCounty']
-    ).sum()
-    print(dr)
-    # print(county, ", Drug Reports = ", dr)
+def drug_in_state(state, substance_name):
+    ret = []
+    for year in years:
+        dr = df[(df['SubstanceName'] == substance_name)
+                & (df['YYYY'] == year)
+                & (df['State'] == state)
+                ].loc[:, 'DrugReports']
+        ret.append(np.array(dr).sum())
+    return ret
 
 
-# print()
+def drug_in_county_percent(county, substance_name, amount):
+    ret = []
+    for year in years:
+        m = np.array(df[(df['SubstanceName'] == substance_name)
+                        & (df['COUNTY'] == county)
+                        & (df['YYYY'] == year)].loc[:, 'DrugReports'])
+        if amount[year - 2010] == 0 or m.size == 0:
+            ret.append(0)
+        else:
+            ret.append(m[0] / amount[year - 2010])
+    return ret
 
 
-def report1():
-    dr = np.array(df[df['FIPS_State'] == 51].drop_duplicates(subset=["COUNTY"]).loc[:, 'COUNTY']).size
-    print(dr)
-    # for year in years:
-    #     for county in counties:
-    #         info = np.array(df.loc[(df["FIPS_Combined"] == county) & (df["YYYY"] == year), "TotalDrugReportsCounty"])
-    #     # print(county, ", Drug Reports = ", info)
+def get_counties(state):
+    return pd.Series(df[df['State'] == state].loc[:, 'COUNTY']).unique()
+
+
+def show_percentage(state, substance_name, k):
+    ret = {}
+    cs = get_counties(state)
+    amount = drug_in_state(state, substance_name)
+    i = 0
+    for county in cs:
+        i = i + 1
+        percent = drug_in_county_percent(county, substance_name, amount)
+        plt.subplot(1, 5, k)
+        plt.plot(years, percent,
+                 label=str(county),
+                 linestyle='-.',
+                 marker='s',
+                 linewidth=1.5)
+        if i > 5:
+            break
+    plt.grid(ls='--')
+    plt.legend()
+    plt.xlabel('Year')
+    plt.ylabel(substance_name + ' in ' + state)
+    plt.ylim((0, 0.27))
+    return ret
+
+
+def report1(drug):
+    k = 1
+    plt.figure(figsize=(25, 5))
+    for state in states:
+        show_percentage(state, drug, k)
+        k = k + 1
+    plt.show()
+
+
+def get_drug_amount(substance_name):
+    ret = []
+    for year in years:
+        s = np.array(df[(df['SubstanceName'] == substance_name)
+                        & (df['YYYY'] == year)]
+                     .loc[:, 'DrugReports']).sum()
+        ret.append(s)
+    return ret
+
+
+def get_year_drug_distribute(year, substance_name):
+    amount = get_drug_amount(substance_name)
+    s = amount[year - 2010]
+    if s == 0:
+        return [0] * states.length()
+    ret = []
+    for state in states:
+        s_state = np.array(df[(df['SubstanceName'] == substance_name)
+                              & (df['YYYY'] == year)
+                              & (df['State'] == state)]
+                           .loc[:, 'DrugReports']).sum()
+        ret.append(s_state / s)
+    return ret
+
+
+def report2(substance_name):
+    plt.figure(figsize=(25, 8))
+
+    for year in years:
+        plt.subplot(2, 4, year - 2009)
+        data = get_year_drug_distribute(year, substance_name)
+        colors = ['tomato', 'lightskyblue', 'goldenrod', 'green', 'y']
+        label = []
+        draw = []
+        color = []
+        for i in range(5):
+            if data[i] != 0:
+                label.append(states[i])
+                draw.append(data[i])
+                color.append(colors[i])
+        size = len(draw)
+        explode = [0] * size
+        explode[int(draw.index(max(draw)))] = 0.07
+
+        plt.pie(draw,
+                labels=label,
+                autopct='%3.2f%%',
+                pctdistance=0.6,
+                explode=explode,
+                colors=color
+                )
+        plt.title(substance_name + ' in ' + str(year))
+        plt.legend(loc='upper right',
+                   bbox_to_anchor=(1.1, 1.05),
+                   fontsize=14,
+                   borderaxespad=0.3)
+
+    plt.axis('equal')
+    plt.show()
+
+
+def get_state_drug_rank(state, year):
+    ret = []
+    amount = []
+    for substance_name in substances:
+        s_state = np.array(df[(df['SubstanceName'] == substance_name)
+                              & (df['YYYY'] == year)
+                              & (df['State'] == state)]
+                           .loc[:, 'DrugReports']).sum()
+        amount.append(s_state)
+
+    new_df = pd.DataFrame({
+        'SubstanceName': substances,
+        'DrugReports': amount
+    })
+    sorted_df = new_df.sort_values('DrugReports', inplace=False)
+    return sorted_df
+
+
+def report3(state):
+    plt.figure(figsize=(30, 10))
+    for year in years:
+        plt.subplot(2, 4, year - 2009)
+
+        rank_df = get_state_drug_rank(state, year)
+        rank_df = rank_df[rank_df['DrugReports'] > 50]
+
+        names = np.array(rank_df.loc[:, 'SubstanceName'])
+        nums = np.array(rank_df.loc[:, 'DrugReports'])
+        plt.barh(names, nums, color='indianred')
+
+        plt.ylabel('Substances')
+        plt.xlabel('reports in ' + state + ' of year ' + str(year))
+        plt.grid(ls='--', axis='x')
+
+    plt.show()
 
 
 def main():
-    # x = np.linspace(0, 10, 200)
-    # data_obj = {'x': x,
-    #             'y1': 2 * x + 1,
-    #             'y2': 3 * x + 1.2,
-    #             'mean': 0.5 * x * np.cos(2 * x) + 2.5 * x + 1.1}
-    #
-    # fig, ax = plt.subplots()
-    #
-    # ax.fill_between('x', 'y1', 'y2', color='yellow', data=data_obj)
-    #
-    # # Plot the "centerline" with `plot`
-    # ax.plot('x', 'mean', color='black', data=data_obj)
-    #
-    # plt.show()
-    report1()
+    report3('OH')
 
 
 if __name__ == '__main__':
